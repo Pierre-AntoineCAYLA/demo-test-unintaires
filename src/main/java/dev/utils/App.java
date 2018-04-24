@@ -1,4 +1,4 @@
-package org.diginamic.demo_tests_unitaires;
+package dev.utils;
 
 /**
  * Hello world!
