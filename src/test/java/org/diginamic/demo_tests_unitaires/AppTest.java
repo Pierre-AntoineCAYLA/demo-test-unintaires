@@ -30,5 +30,8 @@ public class AppTest  {
 	@org.junit.Test
 	public void nulls() {
 		assertTrue(StringUtils.levenshteinDistance(null, "chien") == -1);
+		assertTrue(StringUtils.levenshteinDistance("chien", null) == -1);
+		assertTrue(StringUtils.levenshteinDistance(null, null) == -1);
+		
 	}
 }
