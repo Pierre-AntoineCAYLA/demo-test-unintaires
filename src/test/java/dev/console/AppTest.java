@@ -17,9 +17,9 @@ import dev.exception.CalculException;
 import dev.service.CalculService;
 
 public class AppTest {
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(AppTest.class);
-	
+
 	@Rule
 	public final SystemOutRule systemOutRule = new SystemOutRule().enableLog();
 
@@ -27,10 +27,10 @@ public class AppTest {
 	private CalculService calculService;
 
 	@Before
-	public void setUp() throws Exception { 
-	Scanner sc = new Scanner(System.in); 
-	this.calculService =mock(CalculService.class); 
-	this.app = new App(sc,calculService);
+	public void setUp() throws Exception {
+		Scanner sc = new Scanner(System.in);
+		this.calculService = mock(CalculService.class);
+		this.app = new App(sc, calculService);
 	}
 
 	@org.junit.Test
@@ -39,6 +39,7 @@ public class AppTest {
 		String logConsole = systemOutRule.getLog();
 		assertThat(logConsole).contains("**** Application Calculatrice ****");
 	}
+
 	@org.junit.Test
 	public void testEvaluer() throws Exception {
 		LOG.info("Etant donné, un service CalculService qui retourne 35 à l'évaluation de l'expression 1+34");
@@ -47,22 +48,22 @@ public class AppTest {
 		LOG.info("Lorsque la méthode evaluer est invoquée");
 		this.app.evaluer(expression);
 		LOG.info("Alors le service est invoqué avec l'expression {}", expression);
-		verify(calculService).additionner(expression); 
-		LOG.info("Alors dans la console, s'affiche 1+34=35");
-		assertThat(systemOutRule.getLog()).contains("1+34=35");
-}
-	@org.junit.Test(expected = CalculException.class)
-	public void testEvaluerInvalide() throws Exception {
-		LOG.info("Etant donné, un service CalculService qui retourne 35 à l'évaluation de l'expression 1+34");
-		String expression = "1++34";
-		when(calculService.additionner(expression)).thenReturn(35);
-		LOG.info("Lorsque la méthode evaluer est invoquée");
-		this.app.evaluer(expression);
-		LOG.info("Alors le service est invoqué avec l'expression {}", expression);
-		verify(calculService).additionner(expression); 
+		verify(calculService).additionner(expression);
 		LOG.info("Alors dans la console, s'affiche 1+34=35");
 		assertThat(systemOutRule.getLog()).contains("1+34=35");
 	}
-	
-	
+
+	@org.junit.Test(expected = CalculException.class)
+	public void testEvaluerInvalide() throws Exception {
+		LOG.info("Etant donné, un service CalculService qui retourne erreur à l'évaluation de l'expression 1++34");
+		String expression = "1++34";
+		when(calculService.additionner(expression)).thenThrow(new CalculException());
+		LOG.info("Lorsque la méthode evaluer est invoquée");
+		this.app.evaluer(expression);
+		LOG.info("Alors le service est invoqué avec l'expression {}", expression);
+		verify(calculService).additionner(expression);
+		LOG.info("Alors dans la console, s'affiche L’expression 1++34 est invalide");
+		assertThat(systemOutRule.getLog()).contains("L’expression 1++34 est invalide");
+	}
+
 }
