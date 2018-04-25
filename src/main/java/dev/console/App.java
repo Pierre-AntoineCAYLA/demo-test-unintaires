@@ -19,7 +19,16 @@ public class App {
 
 
 	public void demarrer() {
+		Scanner sc = new Scanner(System.in);
 		afficherTitre();
+		while (sc.hasNext())
+		{	String expression = sc.next();
+			LOG.info("Veuillez saisir une expression");
+			if(expression.equals("fin"))
+					LOG.info("Au revoir :(");
+			else evaluer(expression);
+		}
+		
 	}
 
 	protected void evaluer(String expression) {

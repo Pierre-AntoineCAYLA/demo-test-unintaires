@@ -3,6 +3,7 @@ package dev.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import dev.exception.AurevoirException;
 import dev.exception.CalculException;
 
 public class CalculService {
@@ -27,6 +28,9 @@ public class CalculService {
 		int operation = 0;
 		float[] nombre = new float[150];
 
+		if(expression.contains("fin"))
+			expression=expression.replace("fin","");
+		
 		for (i = 0; i < 150; i++) {
 			for (j = 0; j < 2; j++) {
 				numerique[j][i] = 0;
@@ -61,6 +65,7 @@ public class CalculService {
 				}
 				
 			}
+			
 			else {
 				throw new  CalculException();
 			}
