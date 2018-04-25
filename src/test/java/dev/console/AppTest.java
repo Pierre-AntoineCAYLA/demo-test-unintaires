@@ -72,15 +72,15 @@ public class AppTest {
 	
 	@org.junit.Test
 	public void testEvaluerFin() throws Exception {
-		LOG.info("Etant donné, un service CalculService qui retourne 35 à l'évaluation de l'expression fin");
 		String expression = "fin";
-		when(calculService.additionner(expression)).thenReturn(3);
-		LOG.info("Lorsque la méthode evaluer est invoquée");
-		this.app.evaluer(expression);
-		LOG.info("Alors le service est invoqué avec l'expression {}", expression);
-		verify(calculService).additionner(expression);
-		LOG.info("Alors dans la console, s'affiche 1+34=35");
-		assertThat(systemOutRule.getLog()).contains("au revoir :(");
+		this.app = new App(new Scanner(System.in),calculService);
+		this.app.demarrer();
+		
+		String logConsole = systemOutRule.getLog();
+		
+		assertThat(logConsole).contains("**** Application Calculatrice ****"
+		+ "Veuillez saisir une expression"
+		+"au revoir :(");
 	}
 
 	@org.junit.Test
@@ -102,30 +102,42 @@ public class AppTest {
 		
 	}
 	
+	@org.junit.Test
 	public void testEvaluerAAAFin() throws Exception {
 		String expression = "AAA fin";
-		when(calculService.additionner(expression)).thenThrow(new CalculException());
-		LOG.info("Lorsque la méthode evaluer est invoquée");
-		this.app.evaluer(expression);
-		LOG.info("Alors le service est invoqué avec l'expression {}", expression);
+		systemInMock.provideLines(expression,"fin");
+		this.app = new App(new Scanner(System.in),calculService);
+		
+		when(calculService.additionner(expression)).thenThrow(new CalculException());		
 		verify(calculService).additionner(expression);
-		LOG.info("Alors dans la console, s'affiche l’expression AAA fin est invalide");
-		assertThat(systemOutRule.getLog()).contains("L’expression AAA est invalide");
-		assertThat(systemOutRule.getLog()).contains("au revoir :(");
+		
+		String logConsole = systemOutRule.getLog();
+		
+		assertThat(logConsole).contains("**** Application Calculatrice ****\n\r"
+				+ "Veuillez saisir une expression\n\r"
+				+"l'expresion AAA est non valide\r\n Veuillez saisir une expression\n\r"
+				+"au revoir :(");
 	}
 	
-	@org.junit.Test(expected = CalculException.class)
+	@org.junit.Test
 	public void testEvaluerCaclculCalculFin() throws Exception {
-		LOG.info("Etant donné, un service CalculService qui retourne erreur à l'évaluation de l'expression 1+2 30+2 fin");
-		String expression = "AAA fin";
-		when(calculService.additionner(expression)).thenThrow(new CalculException());
-		LOG.info("Lorsque la méthode evaluer est invoquée");
-		this.app.evaluer(expression);
-		LOG.info("Alors le service est invoqué avec l'expression {}", expression);
-		verify(calculService).additionner(expression);
-		LOG.info("Alors dans la console, s'affiche L’expression AAA fin est invalide");
-		assertThat(systemOutRule.getLog()).contains("1+2=3");
-		assertThat(systemOutRule.getLog()).contains("30+2=32");
-		assertThat(systemOutRule.getLog()).contains("au revoir :(");
+			String expression1 = "1+2";
+			String expression2 = "34+1";
+			systemInMock.provideLines(expression1,expression2,"fin");
+			this.app = new App(new Scanner(System.in),calculService);
+			when(calculService.additionner(expression1)).thenReturn(3);
+			when(calculService.additionner(expression2)).thenReturn(35);
+			this.app.demarrer();
+			verify(calculService).additionner(expression1);
+			verify(calculService).additionner(expression2);
+			
+			
+			String logConsole = systemOutRule.getLog();
+			
+			assertThat(logConsole).contains("**** Application Calculatrice ****\n\r"
+			+ "Veuillez saisir une expression\n\r"
+			+"1+2=3\r\n Veuillez saisir une expression\n\r"
+			+"34+1=35\r\n Veuillez saisir une expression\n\r"
+			+"au revoir :(");
 	}
 }
