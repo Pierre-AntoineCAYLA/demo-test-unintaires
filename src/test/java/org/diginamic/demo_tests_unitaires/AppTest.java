@@ -28,15 +28,15 @@ public class AppTest  {
 		assertTrue(StringUtils.levenshteinDistance("chien", "chine") == 2);
 	}
 	@org.junit.Test
-	public void nullsdroit() {
+	public void nullsDroit() {
 		assertTrue(StringUtils.levenshteinDistance(null, "chien") == -1);
 	}
 	@org.junit.Test
-	public void nullsgauche() {
+	public void nullsGauche() {
 		assertTrue(StringUtils.levenshteinDistance("chien", null) == -1);
 	}
 	@org.junit.Test
-	public void nullsdouble() {
+	public void nullsDouble() {
 		assertTrue(StringUtils.levenshteinDistance(null, null) == -1);
 		
 	}
