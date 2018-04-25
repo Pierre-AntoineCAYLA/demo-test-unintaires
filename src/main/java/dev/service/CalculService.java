@@ -8,7 +8,7 @@ import dev.exception.CalculException;
 public class CalculService {
 	private static final Logger LOG = LoggerFactory.getLogger(CalculService.class);
 
-	public float additionner(String expression) {
+	public int additionner(String expression) {
 		LOG.debug("Evaluation de l'epression" + expression);
 
 		char valeur[] = new char[150];
@@ -24,7 +24,7 @@ public class CalculService {
 		int nbnombre = 0;
 		int compare = 0;
 		int v = 0;
-		float operation = 0;
+		int operation = 0;
 		float[] nombre = new float[150];
 
 		for (i = 0; i < 150; i++) {
@@ -89,18 +89,18 @@ public class CalculService {
 		compare = 0;
 		compteur = 0;
 		nbnombre = 0;
-		operation = nombre[nbnombre];
+		operation = (int) nombre[nbnombre];
 		for (j = compare; j <= i; j++) 
 		{
 			if (operateur[1][j] != 0) {
 				if (operateur[0][j] == 42)
-					operation = operation * nombre[nbnombre + 1];
+					operation = (int) (operation * nombre[nbnombre + 1]);
 				else if (operateur[0][j] == 43)
-					operation = operation + nombre[nbnombre + 1];
+					operation = (int) (operation + nombre[nbnombre + 1]);
 				else if (operateur[0][j] == 45)
-					operation = operation - nombre[nbnombre + 1];
+					operation = (int) (operation - nombre[nbnombre + 1]);
 				else if (operateur[0][j] == 47)
-					operation = operation / nombre[nbnombre + 1];
+					operation = (int) (operation / nombre[nbnombre + 1]);
 				else
 					System.out.println("je ne sais pas");
 				nbnombre = nbnombre + 1;
