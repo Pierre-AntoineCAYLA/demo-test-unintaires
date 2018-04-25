@@ -3,6 +3,8 @@ package dev.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import dev.exception.CalculException;
+
 public class CalculService {
 	private static final Logger LOG = LoggerFactory.getLogger(CalculService.class);
 
@@ -42,7 +44,7 @@ public class CalculService {
 
 		System.out.print("\n");
 
-		for (j = 0; j <= i; j++) {
+		for (j = 0; j <= i-1; j++) {
 			asci = (int) valeur[j];
 			if (asci > 47 && asci <= 58) {
 				numerique[0][compteur] = valeur[j] - 48;
@@ -54,11 +56,13 @@ public class CalculService {
 				operateur[1][compteur] = j + 1;
 				compteur = compteur + 1;
 				indiceErreur = indiceErreur + 1;
-				if (indiceErreur == 2) {
-					System.out.println("Erreur, 2 operateurs à la suite");
-					verif = 1;
-					break;
+				if (indiceErreur == 2) {				
+					throw  new CalculException();				
 				}
+				
+			}
+			else {
+				throw new  CalculException();
 			}
 		}
 
